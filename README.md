@@ -186,7 +186,11 @@ MIT
 
 ## Autor
 
-
+1. Garcia Mancilla Alejandro Guillermo - 202202519 - 7881124
+2. Mamani Tito Moisés - 202203307 - 8019863
+3. Quiroz Guzman Juan Pablo - 202103142 - 14092774
+4. Ramirez Galarza Jhonny Fabián - 202105307 - 8758768
+5. Rocha Medina Vivian Ruby - 202202571 - 9448904
 
 ## Referencias
 
