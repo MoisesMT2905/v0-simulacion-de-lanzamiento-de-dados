@@ -135,8 +135,8 @@ export function Simulator() {
             <Tabs value={mode} onValueChange={(v) => handleModeChange(v as ExperimentMode)}>
               <TabsList className="grid w-full grid-cols-4 bg-secondary">
                 {Object.entries(modeLabels).map(([key, label]) => (
-                  <TabsTrigger 
-                    key={key} 
+                  <TabsTrigger
+                    key={key}
                     value={key}
                     disabled={isSimulating}
                     className="text-foreground"
@@ -284,7 +284,7 @@ export function Simulator() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-bold text-accent">
+                <p className="text-2xl font-bold text-foreground">
                   {stats.lastResult}
                 </p>
               </CardContent>

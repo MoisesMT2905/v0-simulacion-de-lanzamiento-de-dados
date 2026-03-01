@@ -186,7 +186,7 @@ MIT
 
 ## Autor
 
-Moises M. - 2026
+
 
 ## Referencias
 
