@@ -92,9 +92,16 @@ Basado en el Capítulo 1 de "Simulación: Un enfoque práctico" de Raúl Coss Bu
 ## Instalación Local
 
 ```bash
+node -v
+
+npm -v
+```
+
+```bash
 # Clonar el repositorio
-git clone https://github.com/MoisesMT2905/simulator-coins-dice.git
-cd simulator-coins-dice
+git clone https://github.com/MoisesMT2905/v0-simulacion-de-lanzamiento-de-dados.git
+
+cd v0-simulacion-de-lanzamiento-de-dados
 
 # Instalar dependencias
 npm install
@@ -209,7 +216,11 @@ MIT
 
 ## Autor
 
-Moises M. - 2026
+1. Garcia Mancilla Alejandro Guillermo - 202202519 - 7881124
+2. Mamani Tito Moisés - 202203307 - 8019863
+3. Quiroz Guzman Juan Pablo - 202103142 - 14092774
+4. Ramirez Galarza Jhonny Fabián - 202105307 - 8758768
+5. Rocha Medina Vivian Ruby - 202202571 - 9448904
 
 ## Referencias
 
