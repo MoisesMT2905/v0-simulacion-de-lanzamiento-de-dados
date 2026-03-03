@@ -124,7 +124,7 @@ open http://localhost:3000
 ## Enlace del desplegado del programa (alojado en vercel)
 
 ```bash
-[text](https://v0-simulacion-de-lanzamiento-de-dad.vercel.app/)
+https://v0-simulacion-de-lanzamiento-de-dad.vercel.app/
 ```
 
 ## Uso
