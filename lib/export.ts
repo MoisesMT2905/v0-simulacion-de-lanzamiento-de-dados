@@ -8,7 +8,7 @@ export function generateCSV(stats: SimulationStats): string {
 export function downloadCSV(stats: SimulationStats): void {
   const data: any[][] = [];
 
-  // ===== TÍTULO =====
+
   data.push(['ESTADÍSTICAS DE LA SIMULACIÓN']);
   data.push([]);
 
