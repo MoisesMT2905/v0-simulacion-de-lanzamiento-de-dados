@@ -121,11 +121,10 @@ pnpm dev
 open http://localhost:3000
 ```
 
-## Build para Producción
+## Enlace del desplegado del programa (alojado en vercel)
 
 ```bash
-npm run build
-npm start
+[text](https://v0-simulacion-de-lanzamiento-de-dad.vercel.app/)
 ```
 
 ## Uso
