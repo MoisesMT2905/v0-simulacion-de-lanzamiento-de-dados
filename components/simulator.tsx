@@ -10,7 +10,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import CoinDiceSimulator, { ExperimentMode, SimulationStats } from '@/lib/simulator';
 import { FrequencyTable } from './frequency-table';
 import { SimulationCharts } from './simulation-charts';
+import { EventAnalysisModal } from './event-analysis-modal';
 import { downloadCSV } from '@/lib/export';
+import { analyzeEvent, EventAnalysis } from '@/lib/event-analysis';
 import { AlertCircle, Download, RotateCcw, Play, Pause } from 'lucide-react';
 
 export function Simulator() {
@@ -22,6 +24,8 @@ export function Simulator() {
   const [showRelative, setShowRelative] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [error, setError] = useState<string>('');
+  const [selectedEventAnalysis, setSelectedEventAnalysis] = useState<EventAnalysis | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const simulatorRef = useRef<CoinDiceSimulator>(new CoinDiceSimulator());
   const abortRef = useRef<boolean>(false);
@@ -110,6 +114,14 @@ export function Simulator() {
   const handleExport = () => {
     if (stats) {
       downloadCSV(stats);
+    }
+  };
+
+  const handleEventClick = (eventName: string) => {
+    if (stats) {
+      const analysis = analyzeEvent(stats, eventName);
+      setSelectedEventAnalysis(analysis);
+      setIsModalOpen(true);
     }
   };
 
@@ -320,13 +332,20 @@ export function Simulator() {
 
         {/* Charts */}
         {stats && (
-          <SimulationCharts stats={stats} showRelative={showRelative} />
+          <SimulationCharts stats={stats} showRelative={showRelative} onEventClick={handleEventClick} />
         )}
 
         {/* Frequency Table */}
         {stats && (
-          <FrequencyTable stats={stats} showRelative={showRelative} />
+          <FrequencyTable stats={stats} showRelative={showRelative} onEventClick={handleEventClick} />
         )}
+
+        {/* Event Analysis Modal */}
+        <EventAnalysisModal 
+          isOpen={isModalOpen}
+          analysis={selectedEventAnalysis}
+          onClose={() => setIsModalOpen(false)}
+        />
 
         {/* Empty State */}
         {!stats && (
