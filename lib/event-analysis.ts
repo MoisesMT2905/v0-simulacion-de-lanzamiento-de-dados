@@ -165,6 +165,13 @@ export function analyzeEvent(
   return analysis;
 }
 
+const modeLabels: Record<ExperimentMode, string> = {
+  coin: 'Una Moneda',
+  die: 'Un Dado',
+  'two-coins': 'Dos Monedas',
+  'two-dice': 'Dos Dados',
+};
+
 export function exportEventAnalysisCSV(analysis: EventAnalysis): string {
   const lines: string[] = [];
 
@@ -247,7 +254,7 @@ export async function exportEventAnalysisPDF(analysis: EventAnalysis): Promise<v
     
     pdf.setFont(undefined, 'normal');
     const valueLines = pdf.splitTextToSize(value, contentWidth - 50);
-    pdf.text(valueLines, margin + 50, yPos);
+    pdf.text(valueLines, margin + 60, yPos);
     yPos += Math.max(5, valueLines.length * 3.5) + 2;
   };
 
@@ -259,7 +266,7 @@ export async function exportEventAnalysisPDF(analysis: EventAnalysis): Promise<v
   yPos += 8;
 
   // Información del evento
-  addKeyValue('Modo de Simulación', analysis.mode);
+  addKeyValue('Modo de Simulación', modeLabels[analysis.mode]);
   addKeyValue('Fecha', new Date().toLocaleString('es-ES'));
   yPos += 3;
 

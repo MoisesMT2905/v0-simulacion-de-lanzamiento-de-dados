@@ -57,11 +57,6 @@ export function EventAnalysisModal({ isOpen, analysis, onClose }: EventAnalysisM
         <DialogHeader>
           <DialogTitle className="text-2xl text-foreground flex items-center justify-between">
             <span>Análisis del Evento: {analysis.eventName}</span>
-            <DialogClose asChild>
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                <X className="w-4 h-4" />
-              </Button>
-            </DialogClose>
           </DialogTitle>
         </DialogHeader>
 
@@ -98,7 +93,7 @@ export function EventAnalysisModal({ isOpen, analysis, onClose }: EventAnalysisM
                 </div>
                 <div className="bg-background/50 p-3 rounded-lg border border-border">
                   <p className="text-xs text-muted-foreground font-semibold">FRECUENCIA ABSOLUTA</p>
-                  <p className="text-2xl font-bold text-accent mt-1">
+                  <p className="text-2xl font-bold text-foreground mt-1">
                     {analysis.absoluteFrequency.toLocaleString()}
                   </p>
                 </div>
