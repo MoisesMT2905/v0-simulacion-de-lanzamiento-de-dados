@@ -1,6 +1,6 @@
 # Simulador de Monedas y Dados
 
-Una aplicación web interactiva para simular experimentos de lanzamiento de monedas y dados, demostrando la **Ley de los Grandes Números** con hasta **1 billón (10⁹) de simulaciones**.
+Una aplicación web interactiva para simular experimentos de lanzamiento de monedas y dados, demostrando la **Ley de los Grandes Números**.
 
 ## Características
 
@@ -12,7 +12,7 @@ Una aplicación web interactiva para simular experimentos de lanzamiento de mone
 
 ### Funcionalidades
 
-✅ **Simulación Masiva**: Hasta 1 billón de lanzamientos sin problemas  
+✅ **Simulación Masiva**: Hasta 1 millón de lanzamientos sin problemas  
 ✅ **Generador de Números Aleatorios**: Algoritmo Congruencial Lineal (LCG) con largo período  
 ✅ **Visualización en Tiempo Real**: 
 - Gráfico de barras (frecuencias absolutas/relativas)
@@ -35,16 +35,15 @@ Una aplicación web interactiva para simular experimentos de lanzamiento de mone
      - Desviación absoluta y porcentual
      - Estado de convergencia (convergido/convergiendo/sin-convergencia)
   4. **Interpretación de Resultados**: Análisis cualitativo del comportamiento
-- **Exportación PDF profesional** del evento analizado con formato elegante
+- **Exportación PDF** del evento analizado con formato elegante.
 
 ✅ **Exportación de Datos**: CSV descargable con toda la información estadística  
 ✅ **Controles de Simulación**:
 - Botones rápidos: 100, 1K, 10K, 100K, 1M lanzamientos
-- Entrada personalizada hasta 1 billón
 - Barra de progreso en tiempo real
 - Reinicio instantáneo
 
-✅ **Tema Profesional**: Interfaz oscura moderna y responsiva
+✅ **Tema**: Interfaz oscura moderna y responsiva
 
 ## Conceptos Matemáticos Implementados
 
@@ -92,15 +91,20 @@ Basado en el Capítulo 1 de "Simulación: Un enfoque práctico" de Raúl Coss Bu
 ## Instalación Local
 
 ```bash
+# Instalar Git previamente. Y crear una carpeta nueva en la ruta de su preferencia, para alojar el programa.
+
+# Verificar la instalacion de Node.js
 node -v
 
+# Verificar la instalacion del gestor de paquetes predeterminado para Node.js
 npm -v
 ```
 
 ```bash
-# Clonar el repositorio
+# Clonar el repositorio en la terminal de git o vscode.
 git clone https://github.com/MoisesMT2905/v0-simulacion-de-lanzamiento-de-dados.git
 
+#Ejecutar el siguiente comando para ingresar a la carpeta de donde se encuentra el programa.
 cd v0-simulacion-de-lanzamiento-de-dados
 
 # Instalar dependencias
@@ -165,7 +169,6 @@ npm start
 
 - **100 lanzamientos**: < 1ms
 - **1 millón de lanzamientos**: ~50-100ms
-- **1 billón de lanzamientos**: ~30-40 segundos (con barra de progreso)
 
 El código está optimizado para:
 - No almacenar cada resultado individual
