@@ -25,6 +25,18 @@ Una aplicación web interactiva para simular experimentos de lanzamiento de mone
 - Frecuencia relativa
 - Desviación respecto a la teoría
 
+✅ **Análisis Individual de Eventos** (Nuevo):
+- **Drill-down interactivo**: Haz clic en cualquier resultado (gráfico, tabla, selector)
+- **Modal de análisis detallado** con 4 secciones:
+  1. **Definición del Evento**: Descripción de variables y distribuciones
+  2. **Generación de Datos**: Probabilidad teórica vs. frecuencia observada
+  3. **Validación y Precisión**: 
+     - Intervalo de confianza (95%)
+     - Desviación absoluta y porcentual
+     - Estado de convergencia (convergido/convergiendo/sin-convergencia)
+  4. **Interpretación de Resultados**: Análisis cualitativo del comportamiento
+- **Exportación CSV específica** del evento analizado
+
 ✅ **Exportación de Datos**: CSV descargable con toda la información estadística  
 ✅ **Controles de Simulación**:
 - Botones rápidos: 100, 1K, 10K, 100K, 1M lanzamientos
@@ -115,8 +127,19 @@ npm start
    - Gráficos dinámicos de distribución
    - Estadísticas de desviación
 
-5. **Exporta los datos** en formato CSV
-6. **Reinicia** para cambiar de experimento o limpiar datos
+5. **Analiza eventos individuales** (Nuevo):
+   - Haz clic en cualquier barra del gráfico
+   - O haz clic en cualquier fila de la tabla de frecuencias
+   - Se abrirá un panel detallado con el análisis del evento:
+     - Definición matemática del evento
+     - Probabilidad teórica vs. observada
+     - Intervalo de confianza al 95%
+     - Estado de convergencia
+     - Interpretación profesional
+   - Exporta el análisis específico a CSV
+
+6. **Exporta los datos** globales en formato CSV
+7. **Reinicia** para cambiar de experimento o limpiar datos
 
 ## Ejemplos de Uso
 

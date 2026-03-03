@@ -8,11 +8,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 interface SimulationChartsProps {
   stats: SimulationStats;
   showRelative: boolean;
+  onEventClick?: (eventName: string) => void;
 }
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#06b6d4'];
 
-export function SimulationCharts({ stats, showRelative }: SimulationChartsProps) {
+export function SimulationCharts({ stats, showRelative, onEventClick }: SimulationChartsProps) {
   const results = Object.keys(stats.frequencies).sort();
 
   const barData = results.map(result => ({
@@ -26,6 +27,14 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
     value: showRelative ? stats.relativeFrequencies[result] : stats.frequencies[result],
     color: COLORS[idx % COLORS.length],
   }));
+
+  const handleBarClick = (data: any) => {
+    onEventClick?.(data.name);
+  };
+
+  const handlePieClick = (data: any) => {
+    onEventClick?.(data.name);
+  };
 
   return (
     <Card className="bg-card border-border col-span-full">
@@ -42,7 +51,11 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
 
           <TabsContent value="bar" className="mt-4">
             <ResponsiveContainer width="100%" height={400}>
-              <BarChart data={barData} margin={{ top: 20, right: 30, left: 0, bottom: 60 }}>
+              <BarChart data={barData} margin={{ top: 20, right: 30, left: 0, bottom: 60 }} onClick={(state) => {
+                if (state?.activeTooltipIndex !== undefined && barData[state.activeTooltipIndex]) {
+                  handleBarClick(barData[state.activeTooltipIndex]);
+                }
+              }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
                 <XAxis 
                   dataKey="name" 
@@ -55,6 +68,7 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569', borderRadius: '8px', color: '#f1f5f9' }}
                   labelStyle={{ color: '#cbd5e1' }}
+                  cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }}
                 />
                 <Legend wrapperStyle={{ color: '#cbd5e1' }} />
                 <Bar 
@@ -62,9 +76,12 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
                   fill="#3b82f6" 
                   name={showRelative ? 'Frecuencia Relativa' : 'Frecuencia Absoluta'}
                   radius={[8, 8, 0, 0]}
+                  onClick={(data) => handleBarClick(data)}
+                  style={{ cursor: 'pointer' }}
                 />
               </BarChart>
             </ResponsiveContainer>
+            <p className="text-xs text-muted-foreground mt-2 text-center">Haz clic en una barra para ver el análisis detallado</p>
           </TabsContent>
 
           <TabsContent value="pie" className="mt-4">
@@ -79,6 +96,8 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
                   outerRadius={120}
                   fill="#8884d8"
                   dataKey="value"
+                  onClick={(data) => handlePieClick(data)}
+                  style={{ cursor: 'pointer' }}
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
@@ -91,6 +110,7 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
                 />
               </PieChart>
             </ResponsiveContainer>
+            <p className="text-xs text-muted-foreground mt-2 text-center">Haz clic en una sección para ver el análisis detallado</p>
           </TabsContent>
 
           <TabsContent value="comparison" className="mt-4">
@@ -108,6 +128,7 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
                 <Tooltip 
                   contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #475569', borderRadius: '8px', color: '#f1f5f9' }}
                   labelStyle={{ color: '#cbd5e1' }}
+                  cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }}
                 />
                 <Legend wrapperStyle={{ color: '#cbd5e1' }} />
                 <Bar 
@@ -115,6 +136,8 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
                   fill="#3b82f6" 
                   name={showRelative ? 'Frecuencia Relativa' : 'Frecuencia Absoluta'}
                   radius={[8, 8, 0, 0]}
+                  onClick={(data) => handleBarClick(data)}
+                  style={{ cursor: 'pointer' }}
                 />
                 <Bar 
                   dataKey="theoretical" 
@@ -124,6 +147,7 @@ export function SimulationCharts({ stats, showRelative }: SimulationChartsProps)
                 />
               </BarChart>
             </ResponsiveContainer>
+            <p className="text-xs text-muted-foreground mt-2 text-center">Haz clic en una barra azul para ver el análisis detallado</p>
           </TabsContent>
         </Tabs>
       </CardContent>

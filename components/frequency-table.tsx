@@ -7,9 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 interface FrequencyTableProps {
   stats: SimulationStats;
   showRelative: boolean;
+  onEventClick?: (eventName: string) => void;
 }
 
-export function FrequencyTable({ stats, showRelative }: FrequencyTableProps) {
+export function FrequencyTable({ stats, showRelative, onEventClick }: FrequencyTableProps) {
   const results = Object.keys(stats.frequencies).sort();
 
   return (
@@ -17,7 +18,8 @@ export function FrequencyTable({ stats, showRelative }: FrequencyTableProps) {
       <CardHeader>
         <CardTitle className="text-foreground">Tabla de Frecuencias</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-3">
+        <p className="text-xs text-muted-foreground">Haz clic en cualquier fila para ver el análisis detallado del evento</p>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
@@ -40,7 +42,11 @@ export function FrequencyTable({ stats, showRelative }: FrequencyTableProps) {
                 const deviation = stats.deviations[result];
 
                 return (
-                  <TableRow key={result}>
+                  <TableRow 
+                    key={result}
+                    className="cursor-pointer hover:bg-secondary/50 transition-colors"
+                    onClick={() => onEventClick?.(result)}
+                  >
                     <TableCell className="font-medium text-foreground">{result}</TableCell>
                     <TableCell className="text-foreground">{theoretical.toFixed(6)}</TableCell>
                     <TableCell className="text-foreground">
