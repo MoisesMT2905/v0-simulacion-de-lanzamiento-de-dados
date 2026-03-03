@@ -198,3 +198,127 @@ export function exportEventAnalysisCSV(analysis: EventAnalysis): string {
 
   return lines.join('\n');
 }
+
+export async function exportEventAnalysisPDF(analysis: EventAnalysis): Promise<void> {
+  // Importar jsPDF dinámicamente para evitar problemas de SSR
+  const { jsPDF } = await import('jspdf');
+  
+  const pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4',
+  });
+
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const margin = 15;
+  const contentWidth = pageWidth - margin * 2;
+  let yPos = margin;
+
+  const addText = (text: string, options: any = {}) => {
+    const fontSize = options.fontSize || 11;
+    const color = options.color || [0, 0, 0];
+    const isBold = options.bold || false;
+    
+    pdf.setFontSize(fontSize);
+    pdf.setTextColor(...color);
+    if (isBold) pdf.setFont(undefined, 'bold');
+    
+    const splitText = pdf.splitTextToSize(text, contentWidth);
+    pdf.text(splitText, margin, yPos);
+    yPos += (splitText.length * fontSize * 0.35) + (options.spacing || 3);
+    
+    if (isBold) pdf.setFont(undefined, 'normal');
+  };
+
+  const addSection = (title: string) => {
+    yPos += 3;
+    pdf.setDrawColor(59, 130, 246); // Color azul
+    pdf.line(margin, yPos, pageWidth - margin, yPos);
+    yPos += 4;
+    addText(title, { fontSize: 13, bold: true, color: [59, 130, 246] });
+  };
+
+  const addKeyValue = (key: string, value: string) => {
+    pdf.setFontSize(10);
+    pdf.setFont(undefined, 'bold');
+    pdf.setTextColor(0, 0, 0);
+    pdf.text(`${key}:`, margin, yPos);
+    
+    pdf.setFont(undefined, 'normal');
+    const valueLines = pdf.splitTextToSize(value, contentWidth - 50);
+    pdf.text(valueLines, margin + 50, yPos);
+    yPos += Math.max(5, valueLines.length * 3.5) + 2;
+  };
+
+  // Título
+  pdf.setFontSize(16);
+  pdf.setFont(undefined, 'bold');
+  pdf.setTextColor(30, 41, 59); // slate-900
+  pdf.text('Análisis del Evento: ' + analysis.eventName, margin, yPos);
+  yPos += 8;
+
+  // Información del evento
+  addKeyValue('Modo de Simulación', analysis.mode);
+  addKeyValue('Fecha', new Date().toLocaleString('es-ES'));
+  yPos += 3;
+
+  // Sección 1: Definición del Evento
+  addSection('1. Definición del Evento');
+  addKeyValue('Descripción', analysis.eventDefinition);
+  addKeyValue('Variables y Distribuciones', analysis.variablesDescription);
+
+  // Verificar si necesitamos nueva página
+  if (yPos > pageHeight - 50) {
+    pdf.addPage();
+    yPos = margin;
+  }
+
+  // Sección 2: Generación de Datos
+  addSection('2. Generación de Datos');
+  addKeyValue('Probabilidad Teórica', `${(analysis.theoreticalProbability * 100).toFixed(4)}%`);
+  addKeyValue('Frecuencia Absoluta', analysis.absoluteFrequency.toLocaleString());
+  addKeyValue('Frecuencia Relativa (Observada)', `${(analysis.relativeFrequency * 100).toFixed(6)}%`);
+
+  if (yPos > pageHeight - 50) {
+    pdf.addPage();
+    yPos = margin;
+  }
+
+  // Sección 3: Validación y Precisión
+  addSection('3. Validación y Precisión');
+  addKeyValue(
+    'Intervalo de Confianza (95%)',
+    `[${(analysis.confidenceInterval.lower * 100).toFixed(4)}%, ${(analysis.confidenceInterval.upper * 100).toFixed(4)}%]`
+  );
+  addKeyValue('Desviación Absoluta', `${(analysis.deviation * 100).toFixed(6)}%`);
+  addKeyValue('Desviación Porcentual', `${analysis.deviationPercentage.toFixed(2)}%`);
+  
+  const convergenceStatusLabel: Record<string, string> = {
+    'convergido': 'Convergido',
+    'convergiendo': 'Convergiendo',
+    'sin-convergencia': 'Sin Convergencia',
+  };
+  addKeyValue('Estado de Convergencia', convergenceStatusLabel[analysis.convergenceStatus]);
+
+  if (yPos > pageHeight - 50) {
+    pdf.addPage();
+    yPos = margin;
+  }
+
+  // Sección 4: Interpretación
+  addSection('4. Interpretación de Resultados');
+  addText(analysis.interpretation, { fontSize: 10, spacing: 5 });
+
+  // Pie de página
+  pdf.setFontSize(8);
+  pdf.setTextColor(150, 150, 150);
+  pdf.text(
+    'Simulador de Monedas y Dados - Generado el ' + new Date().toLocaleString('es-ES'),
+    margin,
+    pageHeight - 10
+  );
+
+  // Descargar
+  pdf.save(`analisis-evento-${analysis.eventName.replace(/[^a-zA-Z0-9]/g, '-')}.pdf`);
+}

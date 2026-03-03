@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { EventAnalysis, exportEventAnalysisCSV } from '@/lib/event-analysis';
+import { EventAnalysis, exportEventAnalysisPDF } from '@/lib/event-analysis';
 import { Download, X } from 'lucide-react';
 
 interface EventAnalysisModalProps {
@@ -14,17 +14,19 @@ interface EventAnalysisModalProps {
 }
 
 export function EventAnalysisModal({ isOpen, analysis, onClose }: EventAnalysisModalProps) {
+  const [isExporting, setIsExporting] = useState(false);
+
   if (!analysis) return null;
 
-  const handleExportEvent = () => {
-    const csv = exportEventAnalysisCSV(analysis);
-    const element = document.createElement('a');
-    const file = new Blob([csv], { type: 'text/csv' });
-    element.href = URL.createObjectURL(file);
-    element.download = `analisis-evento-${analysis.eventName.replace(/[^a-zA-Z0-9]/g, '-')}.csv`;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+  const handleExportEvent = async () => {
+    setIsExporting(true);
+    try {
+      await exportEventAnalysisPDF(analysis);
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+    } finally {
+      setIsExporting(false);
+    }
   };
 
   const getConvergenceColor = () => {
@@ -160,11 +162,12 @@ export function EventAnalysisModal({ isOpen, analysis, onClose }: EventAnalysisM
           {/* Export Button */}
           <Button
             onClick={handleExportEvent}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+            disabled={isExporting}
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
             size="lg"
           >
             <Download className="w-4 h-4 mr-2" />
-            Exportar Análisis a CSV
+            {isExporting ? 'Generando PDF...' : 'Exportar Análisis a PDF'}
           </Button>
         </div>
       </DialogContent>

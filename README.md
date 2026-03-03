@@ -35,7 +35,7 @@ Una aplicación web interactiva para simular experimentos de lanzamiento de mone
      - Desviación absoluta y porcentual
      - Estado de convergencia (convergido/convergiendo/sin-convergencia)
   4. **Interpretación de Resultados**: Análisis cualitativo del comportamiento
-- **Exportación CSV específica** del evento analizado
+- **Exportación PDF profesional** del evento analizado con formato elegante
 
 ✅ **Exportación de Datos**: CSV descargable con toda la información estadística  
 ✅ **Controles de Simulación**:
@@ -87,7 +87,7 @@ Basado en el Capítulo 1 de "Simulación: Un enfoque práctico" de Raúl Coss Bu
 - **Gráficos**: Recharts
 - **Styling**: Tailwind CSS, shadcn/ui
 - **Simulación**: Algoritmo LCG puro en JavaScript
-- **Exportación**: CSV nativo
+- **Exportación**: CSV nativo y PDF con jsPDF
 
 ## Instalación Local
 
@@ -136,7 +136,7 @@ npm start
      - Intervalo de confianza al 95%
      - Estado de convergencia
      - Interpretación profesional
-   - Exporta el análisis específico a CSV
+   - Exporta el análisis específico a PDF
 
 6. **Exporta los datos** globales en formato CSV
 7. **Reinicia** para cambiar de experimento o limpiar datos
