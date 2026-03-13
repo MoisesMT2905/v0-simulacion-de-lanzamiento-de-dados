@@ -8,7 +8,6 @@ export function generateCSV(stats: SimulationStats): string {
 export function downloadCSV(stats: SimulationStats): void {
   const data: any[][] = [];
 
-
   data.push(['ESTADÍSTICAS DE LA SIMULACIÓN']);
   data.push([]);
 
@@ -18,10 +17,12 @@ export function downloadCSV(stats: SimulationStats): void {
   data.push(['Último Resultado', stats.lastResult]);
   data.push([]);
 
-  // ===== ENCABEZADOS DE TABLA =====
+  // ===== ENCABEZADOS =====
   const headerRowIndex = data.length;
+
   data.push([
     'RESULTADO',
+    'VALOR / SUMA',
     'FRECUENCIA ABSOLUTA',
     'FRECUENCIA RELATIVA',
     'PROBABILIDAD TEÓRICA',
@@ -32,6 +33,7 @@ export function downloadCSV(stats: SimulationStats): void {
   Object.keys(stats.frequencies).forEach(key => {
     data.push([
       key,
+      stats.derivedValues[key], // ⭐ NUEVA COLUMNA
       stats.frequencies[key],
       stats.relativeFrequencies[key],
       stats.theoreticalProbs[key],
@@ -44,6 +46,7 @@ export function downloadCSV(stats: SimulationStats): void {
   // ===== ANCHOS DE COLUMNA =====
   ws['!cols'] = [
     { wch: 18 },
+    { wch: 14 },
     { wch: 24 },
     { wch: 24 },
     { wch: 26 },
@@ -52,14 +55,14 @@ export function downloadCSV(stats: SimulationStats): void {
 
   // ===== COMBINAR TÍTULO =====
   ws['!merges'] = [
-    { s: { r: 0, c: 0 }, e: { r: 0, c: 4 } }
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }
   ];
 
-  // ===== AUTOFILTRO (TABLA) =====
+  // ===== AUTOFILTRO =====
   ws['!autofilter'] = {
     ref: XLSX.utils.encode_range({
       s: { r: headerRowIndex, c: 0 },
-      e: { r: data.length - 1, c: 4 }
+      e: { r: data.length - 1, c: 5 }
     })
   };
 
@@ -95,12 +98,13 @@ function aplicarFormato(
   endRow: number
 ) {
   for (let r = startRow; r <= endRow; r++) {
-    const rel = XLSX.utils.encode_cell({ r, c: 2 });
-    const prob = XLSX.utils.encode_cell({ r, c: 3 });
-    const dev = XLSX.utils.encode_cell({ r, c: 4 });
 
-    if (ws[rel]) ws[rel].z = '0.000';
-    if (ws[prob]) ws[prob].z = '0.000';
-    if (ws[dev]) ws[dev].z = '0.000';
+    const rel = XLSX.utils.encode_cell({ r, c: 3 });
+    const prob = XLSX.utils.encode_cell({ r, c: 4 });
+    const dev = XLSX.utils.encode_cell({ r, c: 5 });
+
+    if (ws[rel]) ws[rel].z = '0.000000';
+    if (ws[prob]) ws[prob].z = '0.000000';
+    if (ws[dev]) ws[dev].z = '0.000000';
   }
 }
