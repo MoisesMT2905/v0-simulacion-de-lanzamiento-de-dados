@@ -61,16 +61,16 @@ export function FrequencyTable({ stats, showRelative, onEventClick }: FrequencyT
     12: 1 / 36
   };
 
-  /* ENCONTRAR SUMA MAS PROBABLE */
+  /* 🔥 ENCONTRAR SUMA GANADORA SEGÚN SIMULACIÓN */
 
-  let mostLikelySum = null;
-  let maxProb = 0;
+  let mostLikelySum: number | null = null;
+  let maxObserved = -1;
 
-  Object.entries(theoreticalSums).forEach(([sum, prob]) => {
+  Object.entries(diceSumStats).forEach(([sum, prob]) => {
 
-    if (prob > maxProb) {
-      maxProb = prob;
-      mostLikelySum = sum;
+    if (prob > maxObserved) {
+      maxObserved = prob;
+      mostLikelySum = Number(sum);
     }
 
   });
@@ -80,7 +80,7 @@ export function FrequencyTable({ stats, showRelative, onEventClick }: FrequencyT
 
       {/* CARTA CON VALOR MAS PROBABLE */}
 
-      {stats.mode === 'two-dice' && (
+      {stats.mode === 'two-dice' && mostLikelySum !== null && (
 
         <Card className="bg-card border-border mb-4">
 
@@ -91,17 +91,19 @@ export function FrequencyTable({ stats, showRelative, onEventClick }: FrequencyT
           </CardHeader>
 
           <CardContent>
+
             <p className="text-lg font-semibold">
               La suma con mayor probabilidad de salir es: <b>{mostLikelySum}</b>
             </p>
 
             <p className="text-sm text-muted-foreground">
-              Probabilidad teórica: {maxProb.toFixed(6)}
+              Probabilidad teórica: {theoreticalSums[mostLikelySum].toFixed(6)}
             </p>
 
             <p className="text-sm text-muted-foreground">
-              Probabilidad relativa observada: {(diceSumStats[Number(mostLikelySum)] || 0).toFixed(6)}
+              Probabilidad relativa observada: {diceSumStats[mostLikelySum].toFixed(6)}
             </p>
+
           </CardContent>
 
         </Card>

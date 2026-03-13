@@ -206,6 +206,36 @@ export function exportEventAnalysisCSV(analysis: EventAnalysis): string {
   return lines.join('\n');
 }
 
+function getEventValue(event: string): number | null {
+
+  const name = event.toUpperCase();
+
+  // 🎲 DOS DADOS (ej: 5-1)
+  if (name.includes('-')) {
+    const [a, b] = name.split('-').map(Number);
+    if (!isNaN(a) && !isNaN(b)) {
+      return a + b;
+    }
+  }
+
+  // 🪙 DOS MONEDAS (CC, CX, XC, XX)
+  if (name.length === 2 && (name.includes('C') || name.includes('X'))) {
+    const value = (v: string) => v === 'C' ? 1 : 0;
+    return value(name[0]) + value(name[1]);
+  }
+
+  // 🎲 UN DADO
+  if (!isNaN(Number(name))) {
+    return Number(name);
+  }
+
+  // 🪙 UNA MONEDA
+  if (name === 'C') return 1;
+  if (name === 'X') return 0;
+
+  return null;
+}
+
 export async function exportEventAnalysisPDF(analysis: EventAnalysis): Promise<void> {
   // Importar jsPDF dinámicamente para evitar problemas de SSR
   const { jsPDF } = await import('jspdf');
@@ -262,7 +292,15 @@ export async function exportEventAnalysisPDF(analysis: EventAnalysis): Promise<v
   pdf.setFontSize(16);
   pdf.setFont(undefined, 'bold');
   pdf.setTextColor(30, 41, 59); // slate-900
-  pdf.text('Análisis del Evento: ' + analysis.eventName, margin, yPos);
+  const eventValue = getEventValue(analysis.eventName);
+
+let title = 'Análisis del Evento: ' + analysis.eventName;
+
+if (eventValue !== null) {
+  title += ` (Suma: ${eventValue})`;
+}
+
+pdf.text(title, margin, yPos);
   yPos += 8;
 
   // Información del evento
