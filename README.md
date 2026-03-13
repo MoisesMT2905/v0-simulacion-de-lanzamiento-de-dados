@@ -19,11 +19,17 @@ Una aplicación web interactiva para simular experimentos de lanzamiento de mone
 - Gráfico de pastel (distribución de resultados)
 - Gráfico comparativo (resultados vs. probabilidad teórica)
 
-✅ **Tabla de Frecuencias**: Muestra:
+✅ **Tabla de Frecuencias Mejorada** (Nueva Funcionalidad):
+- **Columna de Valor Derivado**: 
+  - Para **Dos Dados**: Suma de los dos dados (2-12)
+  - Para **Dos Monedas**: Suma de valores (Cara=1, Cruz=0) → resultado 0, 1 o 2
+  - Para **Un Dado**: Valor del dado (1-6)
+  - Para **Una Moneda**: Valor numérico (Cara=1, Cruz=0)
 - Probabilidad teórica
 - Frecuencia absoluta
 - Frecuencia relativa
 - Desviación respecto a la teoría
+- Útil para análisis de apuestas y distribuciones derivadas (Capítulo 1 - Coss Bu)
 
 ✅ **Análisis Individual de Eventos** (Nuevo):
 - **Drill-down interactivo**: Haz clic en cualquier resultado (gráfico, tabla, selector)

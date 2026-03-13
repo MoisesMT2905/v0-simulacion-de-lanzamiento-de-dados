@@ -52,32 +52,32 @@ function getEventDefinition(mode: ExperimentMode, eventName: string): {
     coin: {
       'Cara': {
         definition: 'El resultado del lanzamiento de una moneda es cara',
-        variables: 'Moneda: Variable aleatoria binomial con p=0.5 (probabilidad de éxito)',
+        variables: 'Moneda: Variable aleatoria binomial con p=0.5. Valor numérico asignado: 1 (para apuestas)',
       },
       'Cruz': {
         definition: 'El resultado del lanzamiento de una moneda es cruz',
-        variables: 'Moneda: Variable aleatoria binomial con p=0.5 (probabilidad de fracaso)',
+        variables: 'Moneda: Variable aleatoria binomial con p=0.5. Valor numérico asignado: 0 (para apuestas)',
       },
     },
     die: {
-      '1': { definition: 'El dado muestra el número 1', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}' },
-      '2': { definition: 'El dado muestra el número 2', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}' },
-      '3': { definition: 'El dado muestra el número 3', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}' },
-      '4': { definition: 'El dado muestra el número 4', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}' },
-      '5': { definition: 'El dado muestra el número 5', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}' },
-      '6': { definition: 'El dado muestra el número 6', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}' },
+      '1': { definition: 'El dado muestra el número 1', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}. Valor = 1' },
+      '2': { definition: 'El dado muestra el número 2', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}. Valor = 2' },
+      '3': { definition: 'El dado muestra el número 3', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}. Valor = 3' },
+      '4': { definition: 'El dado muestra el número 4', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}. Valor = 4' },
+      '5': { definition: 'El dado muestra el número 5', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}. Valor = 5' },
+      '6': { definition: 'El dado muestra el número 6', variables: 'Dado: Variable aleatoria uniforme discreta en {1,2,3,4,5,6}. Valor = 6' },
     },
     'two-coins': {
-      'CC': { definition: 'Ambas monedas muestran cara', variables: 'Dos monedas independientes, cada una con p=0.5. Evento: intersección de dos caras' },
-      'CX': { definition: 'Primera moneda cara, segunda cruz', variables: 'Moneda 1: Cara (p=0.5), Moneda 2: Cruz (p=0.5)' },
-      'XC': { definition: 'Primera moneda cruz, segunda cara', variables: 'Moneda 1: Cruz (p=0.5), Moneda 2: Cara (p=0.5)' },
-      'XX': { definition: 'Ambas monedas muestran cruz', variables: 'Dos monedas independientes, cada una con p=0.5. Evento: intersección de dos cruces' },
+      'CC': { definition: 'Ambas monedas muestran cara', variables: 'Dos monedas independientes (p=0.5 cada una). Suma = Cara(1) + Cara(1) = 2' },
+      'CX': { definition: 'Primera moneda cara, segunda cruz', variables: 'Moneda 1: Cara(1), Moneda 2: Cruz(0). Suma = 1' },
+      'XC': { definition: 'Primera moneda cruz, segunda cara', variables: 'Moneda 1: Cruz(0), Moneda 2: Cara(1). Suma = 1' },
+      'XX': { definition: 'Ambas monedas muestran cruz', variables: 'Dos monedas independientes (p=0.5 cada una). Suma = Cruz(0) + Cruz(0) = 0' },
     },
     'two-dice': {
       // Dinámico - se genera en la función
       '_default': { 
         definition: 'Resultado específico del lanzamiento de dos dados',
-        variables: 'Dos dados independientes, cada uno uniforme en {1,2,3,4,5,6}. Espacio muestral: 36 resultados equiprobables'
+        variables: 'Dos dados independientes, cada uno uniforme en {1,2,3,4,5,6}. Espacio muestral: 36 resultados. Se incluye la suma de ambos dados (2-12).'
       },
     },
   };

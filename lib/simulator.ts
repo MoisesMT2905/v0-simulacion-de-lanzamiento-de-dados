@@ -28,6 +28,7 @@ export interface SimulationResult {
 export interface SimulationStats extends SimulationResult {
   relativeFrequencies: Record<string, number>;
   deviations: Record<string, number>;
+  derivedValues: Record<string, number>; // For storing Suma/Valor for each result
 }
 
 class CoinDiceSimulator {
@@ -40,6 +41,26 @@ class CoinDiceSimulator {
 
   private getRandomInt(min: number, max: number): number {
     return Math.floor(this.lcg.next() * (max - min + 1)) + min;
+  }
+
+  private calculateDerivedValue(mode: ExperimentMode, result: string): number {
+    if (mode === 'coin') {
+      // Cara = 1, Cruz = 0
+      return result === 'Cara' ? 1 : 0;
+    } else if (mode === 'die') {
+      // Valor = número del dado
+      return parseInt(result, 10);
+    } else if (mode === 'two-coins') {
+      // Cara = 1, Cruz = 0, so we sum the values
+      const coin1 = result[0] === 'C' ? 1 : 0;
+      const coin2 = result[1] === 'C' ? 1 : 0;
+      return coin1 + coin2;
+    } else if (mode === 'two-dice') {
+      // Two dice: sum the values
+      const [die1, die2] = result.split('-').map(Number);
+      return die1 + die2;
+    }
+    return 0;
   }
 
   private initializeResult(mode: ExperimentMode): SimulationResult {
@@ -128,6 +149,7 @@ class CoinDiceSimulator {
 
     const relativeFrequencies: Record<string, number> = {};
     const deviations: Record<string, number> = {};
+    const derivedValues: Record<string, number> = {};
 
     Object.keys(this.currentResult.frequencies).forEach(key => {
       const freq = this.currentResult!.frequencies[key];
@@ -136,12 +158,14 @@ class CoinDiceSimulator {
       
       relativeFrequencies[key] = relative;
       deviations[key] = Math.abs(relative - theoretical);
+      derivedValues[key] = this.calculateDerivedValue(this.currentResult!.mode, key);
     });
 
     return {
       ...this.currentResult,
       relativeFrequencies,
       deviations,
+      derivedValues,
     };
   }
 
